@@ -1,17 +1,19 @@
 import ToDoList from "./components/ToDoList";
 import ToDoItem from "./components/ToDoItem";
 import { useState } from "react";
+import Modal from "./components/Modal";
 
 function App() {
   
   const [listState, setListState] = useState([])
+  const [modalState, setModalState] = useState({active:false, index:null})
 
   // Главный стиль
   let AppStyle = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'start',
-    alignItems: 'center'
+    alignItems: 'center',
   } 
 
   // Стиль для текста о пустом списке
@@ -20,6 +22,7 @@ function App() {
     marginTop: '15px'
   }
 
+
   return (
     <div style={AppStyle}>
       { /* Компонент список */ }
@@ -27,11 +30,12 @@ function App() {
         { /* Проверка на пустой список */
           listState.length !== 0 ? listState.map((item, index)=>{
             return(
-              <ToDoItem key={index} text={item} />
+                <ToDoItem key={index} text={item.text} markerColor={item.markerColor} setModalState={setModalState} index={index} />
             )
-          }) : <h2 style={EmptyTextStyle}>Тут пока пусто🥺</h2>
+          }) : <h4 style={EmptyTextStyle}>Тут пока пусто🥺</h4>
         } 
       </ToDoList>
+      <Modal modalState={modalState} setModalState={setModalState} listState={listState} setListState={setListState} />
     </div>
   );
 }
